@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.StringTokenizer;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,8 +44,16 @@ public static void main(String[] args) throws MalformedURLException {
  **/
 public String tagText(String inputText){
 	maxTagger = new MaxentTagger(TAGGER_MODEL);
-	String result = maxTagger.tagString(inputText);
-	return result;
+	if(inputText.length() > 10000){
+		StringTokenizer st = new StringTokenizer(inputText);
+		StringBuffer buffer= new StringBuffer();
+	   while (st.hasMoreTokens()) {
+	      buffer.append(maxTagger.tagString(st.nextToken()) + " ");
+	   		}
+	   return buffer.toString();
+	   }
+	else
+		return maxTagger.tagString(inputText);	
 } 
 /**
  * Method to retrieve the plain text from given URL
